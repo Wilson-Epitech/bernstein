@@ -9,6 +9,6 @@ spec:
   capacity:
     storage: 10G
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   hostPath:
     path: /var/lib/postgresql/data
