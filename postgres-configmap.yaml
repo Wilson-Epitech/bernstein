@@ -4,6 +4,6 @@ metadata:
   name: postgres-config
   namespace: default
 data:
-  POSTGRES_HOST: ""
+  POSTGRES_HOST: postgres-service
   POSTGRES_PORT: "5432"
-  POSTGRES_DB: "w_db"
+  POSTGRES_DB: w_db
