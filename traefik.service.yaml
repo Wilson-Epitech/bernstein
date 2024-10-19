@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik
+  namespace: kube-public
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      nodePort: 30021
+    - port: 8080
+      nodePort: 30042
+  selector:
+    app: traefik
