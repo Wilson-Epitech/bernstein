@@ -6,6 +6,4 @@ metadata:
   labels:
     app: redis
 data:
-  redis.conf: |
-    maxmemory 128mb
-    maxmemory-policy allkeys-lru
+  REDIS_HOST: redis-service
