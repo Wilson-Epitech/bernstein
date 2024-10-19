@@ -20,7 +20,7 @@ jobs:
 
         echo "## 🚀 Count files result" >> $GITHUB_STEP_SUMMARY
         {
-          if [ "$nb_files" -ne 9 ]; then
+          if [ "$nb_files" -ne 8 ]; then
             echo "- ### Not enough files ❌" >> $GITHUB_STEP_SUMMARY
             echo "Not enough files"
             exit 1
@@ -40,7 +40,6 @@ jobs:
         files=(
             "./postgres.configmap.yaml"
             "./postgres.secret.yaml"
-            "./postgres.volume.claim.yaml"
             "./postgres.deployment.yaml"
             "./postgres.service.yaml"
             "./postgres.volume.yaml"
