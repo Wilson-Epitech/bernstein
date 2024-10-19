@@ -5,10 +5,24 @@ metadata:
   labels:
     app: postgres
 spec:
-  storageClassName: default
+  storageClassName: manual
   capacity:
     storage: 10G
   accessModes:
     - ReadWriteOnce
   hostPath:
     path: /var/lib/postgresql/data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-volume-claim
+  labels:
+    app: postgres
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10G
