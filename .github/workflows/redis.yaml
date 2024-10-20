@@ -29,7 +29,7 @@ jobs:
     - name: redis deployment
       run: |
         kubectl apply -f redis.configmap.yaml
-        kubectl apply -f redis.deployement.yaml
+        kubectl apply -f redis.deployment.yaml
         kubectl apply -f redis.service.yaml
 
     - name: wait for pod
