@@ -2,9 +2,9 @@ name: requirements-actions
 
 on:
   push:
-    branches: [ "main", "dev", "wilson/dev"]
+    branches: [ "main", "dev", "wilson/dev" ]
   pull_request:
-    branches: [ "main", "dev", "wilson/dev"]
+    branches: [ "main", "dev", "wilson/dev" ]
 
 jobs:
   requirements:
@@ -12,65 +12,86 @@ jobs:
     timeout-minutes: 1
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: count files
-      run: |
-        nb_files=$(find . -type f -name "*.yaml" -not -path "./.github/*" | wc -l)
+      - name: count files
+        run: |
+          nb_files=$(find . -type f -name "*.yaml" -not -path "./.github/*" | wc -l)
 
-        echo "## 🚀 Count files result" >> $GITHUB_STEP_SUMMARY
-        {
-          if [ "$nb_files" -ne 19 ]; then
-            echo "- ### Not enough files ❌" >> $GITHUB_STEP_SUMMARY
-            echo "Not enough files"
-            exit 1
-          else
-            echo "- ### Good number of files ✅" >> $GITHUB_STEP_SUMMARY
-            exit 0
-          fi
-        }
-
-
-    - name: check files name
-      run: |
-        echo "## 🚀 Files name check" >> $GITHUB_STEP_SUMMARY
-
-        missed_file=false
-
-        files=(
-          "./cadvisor.daemonset.yaml"
-          "./poll.deployment.yaml"
-          "./poll.ingress.yaml"
-          "./poll.service.yaml"
-          "./postgres.configmap.yaml"
-          "./postgres.deployment.yaml"
-          "./postgres.secret.yaml"
-          "./postgres.service.yaml"
-          "./postgres.volume.yaml"
-          "./redis.configmap.yaml"
-          "./redis.deployment.yaml"
-          "./redis.service.yaml"
-          "./result.deployment.yaml"
-          "./result.ingress.yaml"
-          "./result.service.yaml"
-          "./traefik.deployment.yaml"
-          "./traefik.rbac.yaml"
-          "./traefik.service.yaml"
-          "./worker.deployment.yaml"
-        )
-
-        for file in "${files[@]}"; do
-            if cat "$file" > /dev/null 2>&1; then
-                echo "$file ✅" >> $GITHUB_STEP_SUMMARY
+          echo "## 🚀 Count files result" >> $GITHUB_STEP_SUMMARY
+          {
+            if [ "$nb_files" -ne 19 ]; then
+              echo "- ### Not enough files ❌" >> $GITHUB_STEP_SUMMARY
+              echo "Not enough files"
+              exit 1
             else
-                echo "$file ❌" >> $GITHUB_STEP_SUMMARY
-                missed_file=true
+              echo "- ### Good number of files ✅" >> $GITHUB_STEP_SUMMARY
+              exit 0
             fi
-        done
-        if [ "$missed_file" = true ]; then
+          }
+
+      - name: check files name
+        run: |
+          echo "## 🚀 Files name check" >> $GITHUB_STEP_SUMMARY
+
+          missed_file=false
+
+          files=(
+            "./cadvisor.daemonset.yaml"
+            "./poll.deployment.yaml"
+            "./poll.ingress.yaml"
+            "./poll.service.yaml"
+            "./postgres.configmap.yaml"
+            "./postgres.deployment.yaml"
+            "./postgres.secret.yaml"
+            "./postgres.service.yaml"
+            "./postgres.volume.yaml"
+            "./redis.configmap.yaml"
+            "./redis.deployment.yaml"
+            "./redis.service.yaml"
+            "./result.deployment.yaml"
+            "./result.ingress.yaml"
+            "./result.service.yaml"
+            "./traefik.deployment.yaml"
+            "./traefik.rbac.yaml"
+            "./traefik.service.yaml"
+            "./worker.deployment.yaml"
+          )
+
+          for file in "${files[@]}"; do
+            if cat "$file" > /dev/null 2>&1; then
+              echo "$file ✅" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "$file ❌" >> $GITHUB_STEP_SUMMARY
+              missed_file=true
+            fi
+          done
+          if [ "$missed_file" = true ]; then
             echo "Somes files are uncorecctly named ❌"
             exit 1
-        else
+          else
             echo "All files are correctly named ✅"
             exit 0
-        fi
+          fi
+
+      - name: check files deployment
+        run: |
+          echo "## 🚀 Files deployment check" >> $GITHUB_STEP_SUMMARY
+
+          undeployed=false
+
+          for file in "${files[@]}"; do
+            if kubectl apply -f "$file" > /dev/null 2>&1; then
+              echo "$file deployment ✅" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "$file deployement ❌" >> $GITHUB_STEP_SUMMARY
+              undeployed=true
+            fi
+          done
+          if [ "$undeployed" = true ]; then
+            echo "Somes files can't be deployed ❌"
+            exit 1
+          else
+            echo "All files can be deployed ✅"
+            exit 0
+          fi
