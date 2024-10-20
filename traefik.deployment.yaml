@@ -16,6 +16,9 @@ spec:
       containers:
       - name: traefik
         image: traefik:3.1
-        ports:
-        - containerPort: 80
-        - containerPort: 8080
+        args:
+          - --api.insecure=true
+          - --entrypoints.web.address=:80
+          - --entrypoints.websecure.address=:443
+          - --providers.kubernetesingress
+      restartPolicy: Always
