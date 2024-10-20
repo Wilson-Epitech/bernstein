@@ -67,8 +67,7 @@ jobs:
                 missed_file=true
             fi
         done
-
-        if [ "$missed_file" = true]; then
+        if [ "$missed_file" = true ]; then
             echo "Somes files are uncorecctly named ❌"
             exit 1
         else
