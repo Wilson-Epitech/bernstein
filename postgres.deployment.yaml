@@ -26,6 +26,7 @@ spec:
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgres-volume
+      restartPolicy: Always
       volumes:
         - name: postgres-volume
           persistentVolumeClaim:
