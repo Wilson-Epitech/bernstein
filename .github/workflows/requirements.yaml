@@ -20,7 +20,7 @@ jobs:
 
         echo "## 🚀 Count files result" >> $GITHUB_STEP_SUMMARY
         {
-          if [ "$nb_files" -ne 8 ]; then
+          if [ "$nb_files" -ne 19 ]; then
             echo "- ### Not enough files ❌" >> $GITHUB_STEP_SUMMARY
             echo "Not enough files"
             exit 1
@@ -38,14 +38,25 @@ jobs:
         missed_file=false
 
         files=(
-            "./postgres.configmap.yaml"
-            "./postgres.secret.yaml"
-            "./postgres.deployment.yaml"
-            "./postgres.service.yaml"
-            "./postgres.volume.yaml"
-            "./redis.configmap.yaml"
-            "./redis.service.yaml"
-            "./redis.deployement.yaml"
+          "./cadvisor.daemonset.yaml"
+          "./poll.deployment.yaml"
+          "./poll.ingress.yaml"
+          "./poll.service.yaml"
+          "./postgres.configmap.yaml"
+          "./postgres.deployment.yaml"
+          "./postgres.secret.yaml"
+          "./postgres.service.yaml"
+          "./postgres.volume.yaml"
+          "./redis.configmap.yaml"
+          "./redis.deployment.yaml"
+          "./redis.service.yaml"
+          "./result.deployment.yaml"
+          "./result.ingress.yaml"
+          "./result.service.yaml"
+          "./traefik.deployment.yaml"
+          "./traefik.rbac.yaml"
+          "./traefik.service.yaml"
+          "./worker.deployment.yaml"
         )
 
         for file in "${files[@]}"; do
