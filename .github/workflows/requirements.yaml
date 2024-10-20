@@ -66,6 +66,7 @@ jobs:
               missed_file=true
             fi
           done
+
           if [ "$missed_file" = true ]; then
             echo "Somes files are uncorecctly named ❌"
             exit 1
@@ -81,13 +82,14 @@ jobs:
           undeployed=false
 
           for file in "${files[@]}"; do
-            if kubectl apply -f "$file" > /dev/null 2>&1; then
+            if kubectl apply -f "$file"; then
               echo "$file deployment ✅" >> $GITHUB_STEP_SUMMARY
             else
               echo "$file deployement ❌" >> $GITHUB_STEP_SUMMARY
               undeployed=true
             fi
           done
+
           if [ "$undeployed" = true ]; then
             echo "Somes files can't be deployed ❌"
             exit 1
