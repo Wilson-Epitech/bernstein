@@ -1,0 +1,16 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Kubernetes manifests
+        run: |
+          docker run --rm -v "$PWD:/w" ghcr.io/yannh/kubeconform:latest -summary -strict \
+            $(ls *.yaml | grep -v example | sed 's#^#/w/#')
