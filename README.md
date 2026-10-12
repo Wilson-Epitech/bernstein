@@ -10,7 +10,7 @@
 
 </div>
 
-## En deux mots
+## Le projet en quelques mots
 
 Une application de vote découpée en cinq briques (vote, résultats, worker, Redis, PostgreSQL) qu'il faut faire tourner proprement sur un cluster Kubernetes, avec un reverse proxy, du stockage persistant et du monitoring.
 
@@ -22,21 +22,6 @@ Une application de vote découpée en cinq briques (vote, résultats, worker, Re
 - Réplicas et limites de ressources CPU / mémoire
 - **cAdvisor** en DaemonSet pour surveiller les conteneurs
 - CI qui valide chaque manifeste
-
-## Sous le capot
-
-Les votes arrivent sur `poll`, passent par une file Redis, sont dépilés par le `worker` et enregistrés dans PostgreSQL, puis `result` les affiche. Traefik expose `poll` et `result` sur deux noms d'hôte. Les 19 ressources passent la validation `kubeconform`.
-
-```mermaid
-flowchart LR
-    U((utilisateur)) --> T[Traefik<br/>Ingress]
-    T -- poll.dop.io --> P[poll x2]
-    T -- result.dop.io --> RS[result x2]
-    P --> RD[(Redis)]
-    RD --> W[worker]
-    W --> PG[(PostgreSQL<br/>volume persistant)]
-    RS --> PG
-```
 
 ## Lancer le projet
 
@@ -52,4 +37,4 @@ kubectl apply -f .
 
 Wilson Bordichon, Keliane Katary
 
-**Ma part :** J'ai écrit tout le déploiement **PostgreSQL** (deployment, service, ConfigMap, volume), celui de **Redis**, et les **pipelines GitHub Actions** de validation.
+**Ma partition :** J'ai écrit tout le déploiement **PostgreSQL** (deployment, service, ConfigMap, volume), celui de **Redis**, et les **pipelines GitHub Actions** de validation.
