@@ -26,7 +26,7 @@ Une application de vote découpée en cinq briques (vote, résultats, worker, Re
 ## Lancer le projet
 
 ```bash
-cp postgres.secret.example.yaml postgres.secret.yaml   # mettre ses identifiants en base64
+cp postgres.secret.example.yaml postgres.secret.yaml
 kubectl apply -f postgres.secret.yaml
 kubectl apply -f .
 ```
